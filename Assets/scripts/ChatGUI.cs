@@ -41,15 +41,15 @@ using pomeloUnityClient;
 			InitUserWindow();
 		
 			pclient.On("onAdd", (data) => {
-				RefreshUserWindow("add", data);
+				RefreshUserWindow("add", data["body"] as JsonObject);
 			});
 			
 			pclient.On("onLeave", (data) => {
-				RefreshUserWindow("leave", data);
+				RefreshUserWindow("leave", data["body"] as JsonObject);
 			});
 		
 			pclient.On("onChat", (data)=> {
-				addMessage(data);
+				addMessage(data["body"] as JsonObject);
 			});
 		
 	    }

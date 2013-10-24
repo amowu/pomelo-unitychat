@@ -31,6 +31,9 @@ public class LoginGUI : MonoBehaviour {
 			}
 			Application.Quit();
 		}
+		if(canEntry) {
+			Application.LoadLevel(Application.loadedLevel + 1);
+		}
 	}
 	
 	//When quit, release resource
@@ -42,7 +45,7 @@ public class LoginGUI : MonoBehaviour {
 	
 	//Login the chat application and new PomeloClient.
 	void Login() {
-		string url = "http://114.113.202.141:3088";
+		string url = "http://127.0.0.1:3014";
 		pclient = new PomeloClient(url);
 		pclient.init();
 		JsonObject userMessage = new JsonObject();
@@ -57,7 +60,7 @@ public class LoginGUI : MonoBehaviour {
 					pclient = null;
 					System.Object host, port;
 					if (data.TryGetValue("host", out host) && data.TryGetValue("port", out port)) {
-						pclient = new PomeloClient("http://" + "114.113.202.141" + ":" + port.ToString());
+						pclient = new PomeloClient("http://" + "127.0.0.1" + ":" + port.ToString());
 						pclient.init();
 						Entry();
 					}
@@ -66,6 +69,7 @@ public class LoginGUI : MonoBehaviour {
 		});
 	}
 	
+	private bool canEntry = false;
 	//Entry chat application.
 	void Entry(){
 		JsonObject userMessage = new JsonObject();
@@ -74,7 +78,7 @@ public class LoginGUI : MonoBehaviour {
 		if (pclient != null) {
 			pclient.request("connector.entryHandler.enter", userMessage, (data)=>{
 				users = data;
-				Application.LoadLevel(Application.loadedLevel + 1);
+				canEntry = true;
 			});
 		}
 	}
